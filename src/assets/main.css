@@ -68,6 +68,7 @@
 }
 .medium-text{
   font-size: 25px;
+  font-weight: 600;
 }
 
 /*RESPONSIVE DESIGN*/
@@ -268,11 +269,10 @@ button {
 
 
 #alternatative-button {
-  background-color: green;
+  background-color: grey
 }
 #alternatative-button:hover {
-  background-color: rgb(8, 179, 8);
-  box-shadow: 0 0 15px 5px rgba(8, 179, 8, 0.5);
+
   transform: scale(1.05);
 }
 

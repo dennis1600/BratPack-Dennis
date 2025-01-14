@@ -171,7 +171,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 20px auto;
+  margin: 15% auto;
   max-width: 400px;
   text-align: center;
 }
@@ -272,21 +272,24 @@ export default {
   font-size: 1.2rem;
   font-weight: 700;
 }
-
-
+@media (max-width: 768px) {
+  .join-game-container {
+    margin: 30% auto;
+  }
+  header {
+    margin: 2% auto;  
+  }
+  .waitingRoom {
+    min-width: 90%;
+    margin: 5% auto;
+  }
+} 
 @media (max-width: 500px) {
-  .lobby-id {
-    font-size: 2rem;
+  .join-game-container {
+    margin: 45% auto;
   }
-  .join-game-input {
-    font-size: 0.9rem;
-    width: 80%;
+  header {
+    margin: 2% auto;  
   }
-  .submit-button {
-    font-size: 0.9rem;
-    padding: 10px;
-    width:80%;
-  }
-}
-
+} 
 </style>

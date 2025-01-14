@@ -10,7 +10,8 @@
     "createPoll": "Skapa undersökning",
     "about": "Om oss",
 	"or": "eller",
-	"gameDoesNotExist": "Game PIN finns inte!"
+	"gameDoesNotExist": "Game PIN finns inte!",
+	"slogan": "En timme, en slurk varje minut."
 	},
 
 
@@ -76,6 +77,7 @@
 
 	  "GameView": {
 		"generalTrivia": "Frågesportspelet",
+		"whosMostLikelyTo": "Pekleken",
 		"startQuiz": "Starta spel",
 		"waitingOnAdmin": "Väntar på att admin ska starta quizet...",
 		"youHaveAnswered": "Du har svarat!",
@@ -91,7 +93,7 @@
 		"scoreboard": "Poängställning",
 		"points": "poäng",
 		"with": "med",
-		"menu":"Gå tillbaka till meny",
+		"exitGame":"Avsluta runda",
 		"place":"plats",
 		"youAreIn": "Du ligger på",
 		"gameOver": "Spelet är slut"

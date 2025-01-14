@@ -44,17 +44,14 @@
 
         <div v-else-if="currentAnswer  && this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-wrong">✖</div>
-
-          <br>
-           <p>{{ uiLabels.GameView.wrong }}</p>
+           <p class="big-text">{{ uiLabels.GameView.wrong }}</p>
           <p v-if="getPlayerRank(userName)!=1">{{uiLabels.GameView.youAreBehind}}{{getPlayerAhead(userName)}} {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>
         </div>
 
         <!-- Om användaren inte hann svara -->
         <div v-else-if="this.isPlaying" class="feedback-icon-wrapper">
-          <div class="icon-circle icon-wrong">✖</div>
-        
-          <p> {{ uiLabels.GameView.tooSlow }}</p>
+          <div class="icon-circle icon-wrong">✖</div>     
+          <p class=" medium-text"> {{ uiLabels.GameView.tooSlow }}</p>
           <p v-if="getPlayerRank(userName)!=1"> {{ uiLabels.GameView.youAreBehind }}{{ getPlayerAhead(userName) }} {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }}</p>
         </div>
   

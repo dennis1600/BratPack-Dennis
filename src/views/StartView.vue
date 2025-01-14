@@ -13,7 +13,10 @@
       <img id="header" src="/img/Header_pwrHour.png">
     </div>
   </header>
-
+  <div class="slogan">
+    <h2 class="medium-text">{{ uiLabels.StartView.slogan }}</h2>
+    <h2 class="medium-text"></h2>
+  </div>
   <div>
       <div class="join-game-container">
         <div
@@ -174,7 +177,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 20px auto;
+  margin: 5% auto;
   max-width: 400px;
   text-align: center;
 }
@@ -273,12 +276,17 @@ export default {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-@media (min-width: 768px) {
-  .content-wrapper {
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
+@media (max-width: 768px) {
+  .join-game-container {
+    margin: 20% auto;
+  }
+  header {
+    margin: 2% auto;  
+  }
+} 
+@media (max-width: 500px) {
+  .join-game-container {
+    margin: 30% auto;
   }
   header {
     margin: 2% auto;  
