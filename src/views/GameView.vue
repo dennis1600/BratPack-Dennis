@@ -5,27 +5,30 @@
     :gamePin="gamePin"
     :userName="userName"
     :gameActive="true"
+    :game
     />
     
      <button
-        v-if="isAdmin"
-  class="button blue"
-        @click="goBackToMenu()">{{ uiLabels.GameView.menu }}</button> 
+        v-if="isAdmin && activeGame != ''"
+        class="menu-button"
+        @click="goBackToMenu()">{{ uiLabels.GameView.exitGame }}
+    </button> 
 
 
     <!--Game Components-->
-    <div v-if="activeGame && isPlaying"> 
+    <div v-if="activeGame"> 
         <GeneralQuizComponent
             v-if="activeGame === 'generalQuiz'"
             :gameData="gameData"
-            :gamePin="gamePin"
+            :gamePin="gamePin"x
             :uiLabels="uiLabels"
             :isAdmin="isAdmin"
             :userName="userName"
+            :isPlaying="isPlaying"
             @gameCompleted="onGameCompleted"
         />
         <ThisOrThatComponent 
-            v-if="activeGame === 'thisOrThat'" 
+            v-if="activeGame === 'thisOrThat' && isPlaying" 
             :socket="socket"
             :lang="lang"
             :gameData="gameData" 
@@ -42,13 +45,15 @@
             :uiLabels="uiLabels"
             :userName="userName"
             :isAdmin="isAdmin" 
+            :isPlaying="isPlaying"
             @gameCompleted="onGameCompleted"
             />
     </div>
 
     <ScoreBoardComponent 
-    :participants="gameData.participants"
-    :uiLabels="uiLabels"/>
+        :participants="gameData.participants"
+        :uiLabels="uiLabels"
+    />
     
     <div v-if="!activeGame">
        <div class="button-container">
@@ -135,6 +140,16 @@
                 this.userName = sessionStorage.getItem('userName');
                 this.socket.emit('requestGameData', this.gamePin);
             },
+            goBackToMenu(){
+                this.playedGames.push(this.activeGame);
+                this.activeGame ='';
+                this.socket.emit("startMiniGame", {
+                    gameName: '',
+                    gamePin: this.gamePin
+                }
+
+                )
+            },
 
             handleLanguageChange(newLang) {
                 this.lang = newLang;
@@ -195,6 +210,29 @@
   border-radius: 8px;
   border: none;
   cursor: pointer;
+}
+
+.menu-button {
+  position: fixed;
+  top: 85%; /* Avstånd från toppen */
+  left: 10px; /* Avstånd från vänster */
+  background-color: #d32f2f; /* Röd bakgrundsfärg */
+  color: white; /* Vit text */
+  border: none; /* Ingen kant */
+  border-radius: 5px; /* Rundade hörn */
+  padding: 15px 20px; /* Inre marginal */
+  font-size: 1rem; /* Textstorlek */
+  font-weight: bold; /* Fet stil */
+  cursor: pointer; /* Pekare på hover */
+  z-index: 1000; /* Hög prioritet för placering */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Skugga för djup */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Animationseffekt */
+  
+}
+
+.menu-button:hover {
+  background-color: #b71c1c; /* Mörkare röd vid hover */
+  transform: scale(1.05); /* Lätt förstoring vid hover */
 }
 
 

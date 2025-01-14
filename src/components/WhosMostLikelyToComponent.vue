@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Från denna sparning så funkar allt förutom att få svarsalternativ -->
       <!-- Start Phase -->
       <div v-if="currentPhase === 'startPhase'">
         <h1> {{ uiLabels.GameView.generalTrivia }}</h1>
@@ -36,21 +35,23 @@
       <!-- Feedback Phase -->
       <div v-else-if="currentPhase === 'feedbackPhase'">
         
-        <div v-if="checkCorrectAnswer" class="feedback-icon-wrapper">
+        <div v-if="checkCorrectAnswer && this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-correct">✔</div>
-          <p> {{ uiLabels.GameView.youAnsweredRight }}</p>
+          <p class="big-text"> {{ uiLabels.GameView.correct }}</p>
+          <p v-if="getPlayerRank(userName)!=1"> {{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} {{ " " }}</strong> {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>
           
          </div>
-        <div v-else-if="currentAnswer" class="feedback-icon-wrapper">
+        <div v-else-if="currentAnswer  && this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-wrong">✖</div>
-          <p> {{ uiLabels.GameView.youWereWrong }}</p>
+          <p class="big-text"> {{ uiLabels.GameView.youWereWrong }}</p>
+          <p v-if="getPlayerRank(userName)!=1"> {{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} {{ " " }}</strong> {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>
           </div>
 
         <!-- Om användaren inte hann svara -->
-        <div v-else class="feedback-icon-wrapper">
+        <div v-else-if= "this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-wrong">✖</div>
-          <p> {{ uiLabels.GameView.tooSlow }}</p>
-          
+          <p class="big-text"> {{ uiLabels.GameView.tooSlow }}</p>
+          <p v-if="getPlayerRank(userName)!=1"> {{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} {{ " " }}</strong> {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>      
         </div>
   
         <div v-if="isAdmin">
@@ -63,21 +64,13 @@
 
  <!-- Score board--> 
       <div v-else-if="currentPhase === 'scoreBoard'">
-            <p>Final Result</p>
+            <p>{{ uiLabels.GameView.gameOver }}</p>
       </div>
   </div> 
 </template>
   
   <script>
-  /* 
-  
-  GLÖM EJ ATT ÄNDRA SPRÅKET TILL LOCALSTORAGE
-  
-  
-  
-  
-  
-  */
+ 
   
   import QuestionComponent from './QuestionComponent.vue';
   import Nav from './ResponsiveNav.vue';
@@ -96,6 +89,7 @@
       uiLabels: { type: Object, required: true },
       userName: { type: String, required: true},
       isAdmin: { type: Boolean, required: true },
+      isPlaying: {type: Boolean, required:true}
       
     },
   
@@ -143,7 +137,13 @@
       this.setUpGame();
       
       socket.on("sendingQuestionsWho", questions =>{
+
         this.questions = questions
+        if(!this.isPlaying){
+          this.questions.forEach(question=> {
+            question.answers = [];
+          })
+        }
       })
         
       socket.on("startQuestion", (currentQuestionIndex) =>{
@@ -279,8 +279,35 @@
             )
        
           },
-         
-    }
+          getPlayerRank(userName) {
+            const rank = this.sortedParticipants.findIndex(p => p.name === userName) + 1;
+            return rank || "N/A"; 
+          },
+
+
+          getPointsBehind(userName) {
+            const sorted = this.sortedParticipants;
+            const rank = sorted.findIndex(p => p.name === userName); 
+            
+            if (rank > 0) {
+              const pointsBehind = sorted[rank - 1].scoreGame1 - sorted[rank].scoreGame1;
+              return pointsBehind;
+            }
+
+            
+            return null;
+        },
+        getPlayerAhead(userName) {
+          const sorted = this.sortedParticipants; 
+          const rank = sorted.findIndex(p => p.name === userName); 
+            
+          if (rank > 0) {
+            return sorted[rank - 1].name;
+            }
+          return null;
+          },
+            
+      }
 
     }
   </script>
@@ -290,8 +317,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 300px; /* Sätt höjd så att siffran är centrerad */
-    background: black; /* Kanske bakgrundsfärg för "filmisk" känsla */
+    height: 300px; 
+    background: black; 
   }
   
   .countdown-number {
@@ -299,8 +326,8 @@
     font-size: 8rem;
     font-weight: bold;
   }
-  
-  /* Övergångsklasser för namnet "countdown-flash" */
+ 
+
   .countdown-flash-enter-active,
   .countdown-flash-leave-active {
     transition: opacity 0.5s, transform 0.5s;
@@ -332,34 +359,32 @@
   
   .feedback-icon-wrapper {
     display: flex;
-    flex-direction: column; /* Ikon överst, text under */
+    flex-direction: column; 
     align-items: center;
     justify-content: center;
     margin-top: 20px;
   }
   
-  /* Själva cirkeln */
+
   .icon-circle {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;     /* Storlek på bocken/krysset */
-    width: 100px;        /* Bredd/höjd på cirkeln */
+    font-size: 3rem;    
+    width: 100px;        
     height: 100px;
-    border-radius: 50%;  /* Gör den rund */
-    color: #fff;         /* Vit text */
-    margin-bottom: 10px; /* Liten space under cirkeln */
+    border-radius: 50%;  
+    color: #fff;         
+    margin-bottom: 10px; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
   }
-  
-  /* Grön cirkel (rätt) */
+
   .icon-correct {
-    background-color: #4caf50; /* Grön */
+    background-color: #4caf50; 
   }
   
-  /* Röd cirkel (fel) */
   .icon-wrong {
-    background-color: #f44336; /* Röd */
+    background-color: #f44336;
   }
   
   .top-player {

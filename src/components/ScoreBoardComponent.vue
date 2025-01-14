@@ -38,7 +38,7 @@
     },
     computed: {
       sortedParticipants() {
-        // Calculate total score and sort participants in descending order
+
         return this.participants
           .map((participant) => ({
             ...participant,
@@ -112,5 +112,5 @@
   transform: translateY(-5px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
-  </style>
-  
+
+  </style>  

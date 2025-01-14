@@ -23,7 +23,7 @@
 
 <div class="participants-toggle">
   <button @click="toggleParticipants">
-    ◀ {{ uiLabels.CustomGamesView.players }} 
+    ◀ <p class="players-text">{{ uiLabels.CustomGamesView.players }}</p>
   </button>
 </div>
 
@@ -41,7 +41,7 @@
 </div>
 
 
-<div class="container">
+<div class="custom-games-container">
   <div class="main-content"> 
   <p v-if="gamePin" class="big-text">{{ uiLabels.CustomGamesView.pinGame }} {{ gamePin }}</p>
   <p v-else class="big-text">{{ uiLabels.CustomGamesView.loadingGamePin }}</p>
@@ -122,7 +122,7 @@
 
 
   <div class="startbutton-container">
-      <button class="button blue" @click="startGame">{{ uiLabels.CustomGamesView.startGame }}</button>
+      <button class="button green" @click="startGame">{{ uiLabels.CustomGamesView.startGame }}</button>
   </div>
 
 </div>
@@ -133,7 +133,6 @@
 </template>
 
 <script>
-//import {socket} from '../socketClient.js';
 const socket = io("localhost:3000");
 import io from 'socket.io-client'; 
 import EditQuiz1Component from '../components/EditQuiz1Component.vue';
@@ -156,6 +155,11 @@ data: function() {
   return {
     lang: sessionStorage.getItem("lang") || "en",
     selectedMinutes: 10,
+    games: [
+      { id: 'generalQuiz', name: 'General Quiz'} ,
+      { id: 'whosMostLikelyTo', name: 'Who´s most likely to'},
+      { id: 'thisOrThat', name: 'This or that'}
+    ],
     uiLabels: {},
 
     selectedGames: [],
@@ -189,7 +193,7 @@ created: function () {
   socket.on( "uiLabels", labels => this.uiLabels = labels );
   socket.emit( "getUILabels", this.lang );
  
-  //Should restore
+  //If should restore
   const shouldRestore = sessionStorage.getItem('shouldRestoreState');
   this.shouldRestoreState = shouldRestore;
   console.log("Should restore state:", shouldRestore);
@@ -208,7 +212,7 @@ created: function () {
         console.error("Fel vid inläsning av sessionstorage:", error);
       }
     }
-    //
+    //Tar bort efter att datan har återställts
     sessionStorage.removeItem('shouldRestoreState');
     sessionStorage.removeItem('savedData');
 
@@ -219,22 +223,25 @@ created: function () {
   if (!this.$route.params.gamePin) { 
     socket.on('gameCreated', pin => {
       this.gamePin = pin
+
       console.log("GamePin created: ", this.gamePin);
-      socket.emit('joinSocketRoom', pin); //joins the socket room 'gamePin'
+      socket.emit('joinSocketRoom', pin); //joinar för io med 'gamePin'
       this.$router.replace({ path: `/customgames/${pin}` });
       });
-  console.log("Listener for 'updateGameData' in CustomGamesView.vue is active");
-  socket.emit("createGame", this.lang);
-}else {
+      console.log("Listener for 'updateGameData' in CustomGamesView.vue is active");
+      socket.emit("createGame", this.lang);
+    }else {
       console.log("Insde else-statement, this means created gamepin exists");
-      this.gamePin = this.$route.params.gamePin; // just nu kommer gamePin finnas kvar vid refresh, men jag tror att all game data raderas
+      this.gamePin = this.$route.params.gamePin; 
       console.log("GamePin: ", this.gamePin);
+      
       socket.on("gameAlreadyExists", (gamepin)=> {
         console.log("Game already exists, gamepin: ", gamepin);
         this.showGameExistsPopup = true;
       })
-      socket.emit("adminStartedWithExisitingPin", this.gamePin, this.lang) //behöver listener?
-      socket.emit("joinSocketRoom",this.gamePin); // lägga denna tidigare?
+
+      socket.emit("adminStartedWithExisitingPin", this.gamePin, this.lang) // för hörnfall och refresh
+      socket.emit("joinSocketRoom",this.gamePin);
       socket.emit("requestGameData", this.gamePin);
   
 };
@@ -259,8 +266,7 @@ methods: {
       this.alertMessage = message;
       this.isAlertOpen = true;
   },
-
-    // Funktion för att hantera stängning av modalen
+    // Funktion för att hantera stängning av exisitng game popup
   handleModalClose: function() {
       this.isAlertOpen = false;
   },
@@ -295,20 +301,16 @@ methods: {
     };
   },
 
-
-
   mainMenu: function() {
     window.removeEventListener("beforeunload", this.handleBeforeUnload);
     this.$router.push("/");
   },
-
 
   handleLanguageChange(newLang) {
       this.lang = newLang;
       sessionStorage.setItem("lang", newLang);
       socket.emit("getUILabels", this.lang);
   }, 
-  
  
   isNameTaken: function(userName) {
         this.nameTaken = this.participants.some(participant => participant.name === userName);
@@ -355,35 +357,29 @@ methods: {
         scoreGame3: 0
       }
       console.log("adminName: ", adminName);
-      // socket.emit( "participateInCustomGame", this.gamePin,  adminName);
       this.gameStarted = true;
       this.participants.unshift(adminName);
       sessionStorage.setItem('userName', this.userName); 
     }
     else {
-      // Ensure there is no name left in session storage. This is what determines if admin is playing in later views.
+      // Se till att det inte finns något namn kvar i sessionlagringen. Detta avgör om admin spelar i senare vyer.
       if (sessionStorage.getItem('userName')) {
           sessionStorage.removeItem('userName');
       }
     }
     sessionStorage.setItem('isAdmin', true);
     
-    let gameData = {  // borde den inte vara const? /theo
+    let gameData = {
       gamePin: this.gamePin,
       selectedGames: this.selectedGames,
       participants: this.participants,
       selectedMinutes: this.selectedMinutes
-      //lang: this.lang språk sparas i gameData eller localStorage?
-    }
-    console.log("Davids och sebbes test: ", gameData);
+    };
 
     window.removeEventListener("beforeunload", this.handleBeforeUnload);
 
     socket.emit('startGame', gameData)
     this.$router.push("/game/" + this.gamePin).then(() => {
-    // Add or maintain the beforeunload listener
-    
-    console.log("--> Listener carried over to /game/");
   });
     console.log("--> After startGame!")
   },
@@ -392,7 +388,7 @@ methods: {
   this.currentGame = game;
 
   if (game.id === 'generalQuiz') {
-    this.$refs.modalGeneralQuiz.openModal(); // Kontrollera denna rad
+    this.$refs.modalGeneralQuiz.openModal();
   } else if (game.id === 'whosMostLikelyTo') {
     this.$refs.modalWhosMostLikelyTo.openModal();
   } else if (game.id === 'thisOrThat') {
@@ -405,10 +401,8 @@ methods: {
     this.currentGame = null;
   },
 
-  onQuestionsSaved(savedQuestions, useCustomQuestions) { // kanske kan skriva ihop denna med onModalClosed? //david
+  onQuestionsSaved(savedQuestions, useCustomQuestions) {
     console.log(this.currentGame.id);
-
-    console.log("Här ska customGames vara tom", this.customQuestions);
 
     if (!this.customQuestions[this.currentGame.id]) {
     this.customQuestions[this.currentGame.id] = {};
@@ -439,33 +433,15 @@ methods: {
 
       sessionStorage.setItem('shouldRestoreState', true);
       sessionStorage.setItem('savedData', JSON.stringify(dataToSave));
-      // Visa standardvarning om det behövs
+      //Ifall av refresh
     },
 
-  checkIfRefreshPage() {
-    // Check if there already is a name in sessionStorage. If there is, user will pick it up and join the lobby with it.
-      let storagePin = sessionStorage.getItem('gamePin');
-      if (storagePin) {
-        
-        this.gamePin = storagePin;
-        socket.emit("requestParticipants", this.gamePin);
-        
-      }
-    console.log("Checking if refresh... storagePin =", storagePin, "with this.gamePin =", this.gamePin);
-    },
 
-    // dismantleSocket(){ //TODO kanske ta bort
-    //   console.log("-->before if-statement in dismantleSocket in CustomGamesView")
-    //   if(socket) {
-    //   console.log("-->inside if-statement in dismantleSocket in CustomGamesView")
-    //     socket.emit('leaveSocketRoom', this.gamePin); // Leave the room
-    //     // socket.disconnect(); // Disconnect the socket
-    // }else console.log("this.socket does not exist in CustomGamesView")
-    // }
+
   },
 
   beforeUnmount() {
-    // this.dismantleSocket();
+
     console.log("Admin left game, removed event listener");
     
     //socket.emit("adminLeftGame", this.gamePin);
@@ -481,9 +457,7 @@ methods: {
 
 
 <style>
-
-
- .container {
+ .custom-games-container {
     align-items: flex-start;
     display: flex;
     flex-wrap: wrap;
@@ -599,8 +573,8 @@ methods: {
   transform: translateX(-50%);
 }
 .range .field .value.right {
-  right: 43px; /* Placera direkt mot högra kanten av föräldraelementet */
-  transform: translateX(15%); /* Justera för bättre centrering över slidern */
+  right: 43px; 
+  transform: translateX(15%); 
 }
 
 .range .field input {
@@ -636,46 +610,46 @@ methods: {
 .game-selection {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centrera alla rader horisontellt */
-  gap: 10px; /* Mellanrum mellan rader */
-  margin: 20px; /* Avstånd från föregående element */
+  align-items: center; 
+  gap: 10px;
+  margin: 20px; 
 }
 
 .game-option {
   display: flex;
-  justify-content: space-between; /* Mellan checkbox och kugghjulsikon */
-  align-items: center; /* Vertikal centrering */
-  width: 300px; /* Anpassad bredd för knappen */
+  justify-content: space-between; 
+  align-items: center; 
+  width: 300px; 
   padding: 10px 15px;
-  background-color: #2e607f; /* Blå bakgrund */
+  background-color: #2e607f; 
   border-radius: 8px;
-  color: white; /* Vit text */
+  color: white;
   font-size: 1.2rem;
   font-weight: bold;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Skugga för djup */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animation för hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
 }
 
 .game-option:hover {
-  transform: translateY(-5px); /* Lyft vid hover */
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Förstärk skuggan vid hover */
+  transform: translateY(-5px); 
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 .game-option input[type="checkbox"] {
   appearance: none;
-  background-color: white; /* Vit bakgrund för checkbox */
-  border: 2px solid #457b9d; /* Blå kant */
+  background-color: white; 
+  border: 2px solid #457b9d; 
   width: 20px;
   height: 20px;
-  border-radius: 4px; /* Gör checkboxen rundad */
+  border-radius: 4px; 
   outline: none;
   cursor: pointer;
   position: relative;
-  margin-right: 10px; /* Mellanrum mellan checkbox och text */
+  margin-right: 10px; 
 }
 
 .game-option input[type="checkbox"]:checked {
-  background-color: #1d3557; /* Mörkare blå vid aktiv */
+  background-color: #1d3557; 
   border: none;
   display: flex;
   justify-content: center;
@@ -683,7 +657,7 @@ methods: {
 }
 
 .game-option input[type="checkbox"]:checked::before {
-  content: '✔'; /* Kryss för vald */
+  content: '✔'; 
   color: white;
   font-size: 14px;
   display: inline-block;
@@ -691,21 +665,21 @@ methods: {
 }
 
 .game-label {
-  flex: 1; /* Gör så att texten fyller ut */
-  text-align: left; /* Justera text till vänster */
-  padding-left: 10px; /* Mellanrum från checkbox */
+  flex: 1; 
+  text-align: left; 
+  padding-left: 10px;
 }
 
 .edit-image {
   width: 30px;
   height: 30px;
-  cursor: pointer; /* Klickbar ikon */
+  cursor: pointer; 
 }
 
 .participants-sidebar {
   position: fixed;
   top: 0;
-  right: -320px; /* Start utanför skärmen */
+  right: -320px; 
   width: 300px;
   height: 100%;
   background-color: #457b9d;
@@ -716,11 +690,11 @@ methods: {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.3s ease-in-out; /* Övergångseffekt */
+  transition: transform 0.3s ease-in-out; 
 }
 
 .participants-sidebar.visible {
-  transform: translateX(-300px); /* Flytta in på skärmen */
+  transform: translateX(-300px); 
 }
 
 .participants-sidebar h2 {
@@ -731,7 +705,7 @@ methods: {
   list-style: none;
   padding: 0;
   flex: 1;
-  overflow-y: auto; /* Scroll om listan blir för lång */
+  overflow-y: auto; 
 }
 
 .participants-sidebar li {
@@ -756,31 +730,31 @@ methods: {
 
 .participants-toggle {
   position: fixed;
-  top: 15%; /* Vertikalt centrerad */
-  right: 10px; /* Nära högra kanten */
+  top: 24%; 
+  right: 10px; 
   transform: translateY(-50%);
   z-index: 1000;
 }
 
 .participants-toggle button {
-  background-color: #457b9d; /* Blå bakgrund */
-  color: white; /* Vit text */
+  background-color: #457b9d; 
+  color: white; 
   border: none;
-  border-radius: 5px; /* Rundade hörn */
-  font-size: 1rem; /* Textstorlek */
+  border-radius: 5px;
+  font-size: 1rem; 
   font-weight: bold;
-  padding: 10px 20px; /* Padding för större knapp */
+  padding: 5px 10px;
   display: flex;
-  align-items: center; /* Centrera text och ikon vertikalt */
-  gap: 10px; /* Avstånd mellan pilen och texten */
+  align-items: center; 
+  gap: 10px; 
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Lätt skugga */
-  transition: background-color 0.3s, transform 0.2s; /* Smooth hover-effekt */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  transition: background-color 0.3s, transform 0.2s; 
 }
 
 .participants-toggle button:hover {
-  background-color: #1d3557; /* Mörkare blå vid hover */
-  transform: scale(1.05); /* Förstora knappen lite vid hover */
+  background-color: #1d3557; 
+  transform: scale(1.05); 
 }
 
 .popup-overlay {
@@ -826,25 +800,14 @@ methods: {
 .popup-content button:hover {
   background-color: #45a049;
 }
-.startbutton-container { /* Ger mer marginal mellan spelen och startknappen */
+.startbutton-container {
   display: flex;
-  justify-content: center; /* Centrerar knappen */
+  justify-content: center; 
 }
 
-.button.blue {
-  background: linear-gradient(45deg, #1d3557, #457b9d); /* Mörkblå gradient */
-  font-size: 24px; /* Gör knappen större */
-  padding: 15px 30px; /* Mer padding för att göra knappen större */
-  border-radius: 10px; /* Rundade hörn */
-  border: 2px solid #1d3557; /* Ger en mörkblå kant */
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-}
 
-.button.blue:hover {
-  background: linear-gradient(45deg, #457b9d, #a8dadc); /* Ljusare blå vid hover */
-  box-shadow: 0 0 15px 5px #457b9d;
-  transform: scale(1.1); /* Gör knappen större vid hover */
-}
+
+
 
 @media (max-width: 500px) { 
   .container {
@@ -883,18 +846,29 @@ methods: {
   .participants-sidebar {
     z-index: -1;
     width: 70%;
-    right: -70%;
+    right: -77%;
   }
 
   .participants-sidebar.visible {
     z-index: 9999;
     transform: translateX(-70%);
   }
+  .players-text{
+    color:#457b9d; 
+  }
+  .participants-toggle{
+    padding: 5px 10px;
+    color:#457b9d;  
+    box-shadow: none;
+    right: -55px;
+  }
 
   .participants-toggle button {
     padding: 5px 10px;
     font-size: 0.8rem;
     box-shadow: none;
+    top: 30%;
+    
   }
 
   .participants-toggle button:hover {

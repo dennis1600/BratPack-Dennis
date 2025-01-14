@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>{{ question.question }}</h3>
+    <h3 class="question-text">{{ question.question }}</h3>
     <ul>
       <li
       class="answer-option"
@@ -75,9 +75,19 @@ ul {
   max-width: 400px;  
   margin: 0 auto; 
 }
+.question-text {
+  font-size: 2rem; /* Gör texten större */
+  font-weight: bold; /* Lägg till fetstil */
+  text-align: center; /* Centrera texten */
+  margin: 20px 0; /* Lägg till mellanrum runt texten */
+  color: black; /* Välj en färg som passar designen */
+}
+
+
+
 
 li.answer-option {
-  flex: 1 1 calc(50% - 20px); /* Två knappar per rad */
+  flex: 1 1 calc(50% - 20px); 
   max-width: calc(50% - 20px); 
   display: flex;
   justify-content: center; 
@@ -85,26 +95,34 @@ li.answer-option {
 
 /* Anpassning för exakt fyra knappar */
 ul:has(li:nth-child(4)) li.answer-option {
-  flex: 1 1 calc(50% - 20px); /* Två knappar per rad */
+  flex: 1 1 calc(50% - 20px); 
   max-width: calc(50% - 20px);
 }
 
 /* Anpassning för färre än fyra knappar */
 ul:not(:has(li:nth-child(4))) li.answer-option {
-  flex: 1 1 calc(50% - 20px); /* Även här två knappar per rad */
+  flex: 1 1 calc(50% - 20px); 
   max-width: calc(50% - 20px);
 }
 
 /* Anpassning för små skärmar */
 @media (max-width: 480px) {
   ul {
-    max-width: 100%; /* Tillåt full bredd på små skärmar */
+    max-width: 100%; 
   }
 
   li.answer-option {
-    flex: 1 1 100%; /* En knapp per rad på små skärmar */
+    flex: 1 1 100%; 
     max-width: 100%;
   }
+
+
+
+  .question-text {
+    font-size: 1.5rem; /* Mindre textstorlek för små skärmar */
+  }
+
+
 }
 
 button {
@@ -113,7 +131,7 @@ button {
   background: var(--gradient-darkOrange);
   border: none;
   border-radius: 10px; 
-  padding: 10px 20px;
+  padding: 40px 50px;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -131,14 +149,14 @@ button:active {
 }
 
 .selected button {
-  background: linear-gradient(45deg, #da6822, #b5511a); /* --border-orange till en mörkare nyans */
+  background: linear-gradient(45deg, #da6822, #b5511a); 
   transform: scale(1.1);
   color: white;
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
 .dimmed button {
-  background: linear-gradient(45deg, #ff8c42, #b5511a); /* --our-orange till en mörkare nyans */
+  background: linear-gradient(45deg, #ff8c42, #b5511a); 
   opacity: 0.6;
   pointer-events: none;
 }

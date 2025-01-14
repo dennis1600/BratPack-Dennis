@@ -1,20 +1,17 @@
 <template>
   <nav>
-    <!-- Home Button (Logo) -->
     <div id="Logo">
       <router-link to="/">
         <img src="/img/logo_pwr_hour2.0.png" alt="Logo" />
       </router-link>
     </div>
 
-    <!-- Timer (Always Centered) -->
     <div id="Timer" v-if="this.gameActive">
       <div class="timer-wrapper">
         <TimerComponent :gamePin="gamePin" />
       </div>
     </div>
 
-    <!-- Game Pin and Username (Clustered on Top Right) -->
     <div id="UserInfo" v-if="this.gamePin || this.userName">
       <div id="GamePin">Pin: {{ this.gamePin }}</div>
       <div id="UserName" v-if="this.userName">
@@ -22,7 +19,6 @@
       </div>
     </div>
 
-    <!-- Language Switcher (Top Right) -->
     <div v-if="showLangSwitch" id="Language">
       <LanguageSwitcher 
         :lang="lang" 
@@ -127,7 +123,7 @@ nav {
 
 #UserName h1 {
   font-size: 1.2rem;
-  color: #1d3557;
+  color: #1d3557; 
   font-weight: bold;
   margin: 0;
 }
