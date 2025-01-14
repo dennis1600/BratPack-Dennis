@@ -90,7 +90,6 @@ nav {
   align-items: center;
   width: 100%;
   height: 70px; 
-  padding: 0 1rem;
   box-sizing: border-box;
 }
 #Logo img {

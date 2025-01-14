@@ -171,7 +171,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 20px auto;
+  margin: 15% auto;
   max-width: 400px;
   text-align: center;
 }
@@ -265,11 +265,24 @@ export default {
   padding: 5px 0;
   border-bottom: 1px solid var(--our-darkBlue);
 }
-
 @media (max-width: 768px) {
+  .join-game-container {
+    margin: 30% auto;
+  }
+  header {
+    margin: 2% auto;  
+  }
   .waitingRoom {
     min-width: 90%;
     margin: 5% auto;
   }
-}
+} 
+@media (max-width: 500px) {
+  .join-game-container {
+    margin: 45% auto;
+  }
+  header {
+    margin: 2% auto;  
+  }
+} 
 </style>

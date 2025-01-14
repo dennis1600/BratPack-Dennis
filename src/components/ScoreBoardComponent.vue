@@ -54,86 +54,63 @@
   </script>
   <style scoped>
   /* Scoreboard container styling */
-  .scoreboard-container {
-    max-width: 400px;
-    margin: 20px auto;
-    text-align: center;
-    font-family: 'Arial', sans-serif;
-    background-color: #1d3557;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  h2 {
-    color: #f4f4f9;
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-  }
-  
-  /* Scoreboard list styling */
-  .scoreboard {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .scoreboard-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 15px;
-    background-color: #457b9d;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .scoreboard-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Player name and score styling */
-  .player-name {
-    flex: 1;
-    text-align: left;
-  }
-  
-  .player-score {
-    flex: 0 0 auto;
-    text-align: right;
-    color: #f1faee;
-  }
-  
-  /* Fade animation for reordering */
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: all 0.5s ease;
-  }
-  
-  .fade-enter-from,
-  .fade-leave-to {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-/* Green shine effect */
-.scoreboard-item.highlight {
-  color: #2d6a4f; /* Green text color */
-  animation: greenText 2s ease-in-out;
+.scoreboard-container {
+    color:white;
+  max-width: 400px;
+  margin: 20px auto;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  background-color: #1d3557;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-@keyframes greenText {
-  0% {
-    color: #f4f4f9; /* Default color */
-  }
-  100% {
-    color: #2d6a4f; /* Green text */
-  }
+/* Scoreboard list styling with scrolling */
+.scoreboard {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-height: 300px; /* Adjust this to control the number of visible players (e.g., ~4 players) */
+  overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* For modern browsers, makes the scrollbar less intrusive */
+  scrollbar-color: #457b9d #1d3557; /* Colors for the scrollbar (optional) */
+}
+
+/* Optional scrollbar styling for Webkit browsers (Chrome, Safari, Edge) */
+.scoreboard::-webkit-scrollbar {
+  width: 6px; /* Width of the scrollbar */
+}
+
+.scoreboard::-webkit-scrollbar-thumb {
+  background-color: #457b9d; /* Color of the scrollbar thumb */
+  border-radius: 3px; /* Rounded edges for the scrollbar thumb */
+}
+
+.scoreboard::-webkit-scrollbar-track {
+  background-color: #1d3557; /* Background of the scrollbar track */
+}
+
+/* Scoreboard item styling */
+.scoreboard-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #457b9d;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Add hover effects */
+.scoreboard-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
   </style>
   

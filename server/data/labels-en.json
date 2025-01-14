@@ -10,7 +10,8 @@
     "createPoll": "Create Poll",
     "about": "About",
 	"or": "or",
-	"gameDoesNotExist": "Game doesn't exist!"
+	"gameDoesNotExist": "Game doesn't exist!",
+	"slogan": "One hour, one sip every minute."
 	},
 
 	"LobbyView": {
