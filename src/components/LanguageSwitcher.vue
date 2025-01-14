@@ -11,7 +11,9 @@
 
 <script>
 import io from 'socket.io-client';
-const socket = io("localhost:3000");
+// const socket = io("localhost:3000");
+sessionStorage.setItem("dataServer", "");
+const socket = io(sessionStorage.getItem("dateServer"));
 
 export default {
     name:"LanguageSwitcher",

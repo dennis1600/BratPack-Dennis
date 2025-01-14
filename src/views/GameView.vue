@@ -88,6 +88,7 @@
     import WhosMostLikelyToComponent from '../components/WhosMostLikelyToComponent.vue';
     import ResponsiveNav from '../components/ResponsiveNav.vue';
     import ScoreBoardComponent from '../components/ScoreBoardComponent.vue';
+    
 
     export default{
         name: 'GameView',
@@ -114,7 +115,10 @@
             }
         },
         created: function() {
-            this.socket = io("localhost:3000"); // TODO: Fråga micke vilket sätt är bäst att instansiera ny socket?
+            // this.socket = io("localhost:3000"); // TODO: Fråga micke vilket sätt är bäst att instansiera ny socket?
+            sessionStorage.setItem("dataServer", "");
+            this.socket = io(sessionStorage.getItem("dateServer"));
+
             this.socket.on( "uiLabels", labels => this.uiLabels = labels );
             this.socket.on('updateGameData', gameData => {
                 this.gameData = gameData;
