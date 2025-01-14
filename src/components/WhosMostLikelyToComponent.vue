@@ -2,9 +2,9 @@
   <div>
       <!-- Start Phase -->
       <div v-if="currentPhase === 'startPhase'">
-        <h1> {{ uiLabels.GameView.generalTrivia }}</h1>
+        <h1> {{ uiLabels.GameView.whosMostLikelyTo }}</h1>
         <div v-if="isAdmin">
-          <button @click="startQuiz" class="button blue small"> {{ uiLabels.GameView.startQuiz }}</button>
+          <button @click="startQuiz" class="button green"> {{ uiLabels.GameView.startQuiz }}</button>
         </div>
         <div v-else> {{ uiLabels.GameView.waitingOnAdmin }}</div>
       </div>
@@ -38,25 +38,25 @@
         <div v-if="checkCorrectAnswer && this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-correct">✔</div>
           <p class="big-text"> {{ uiLabels.GameView.correct }}</p>
-          <p class="medium-text" v-if="getPlayerRank(userName)!=1"> {{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} {{ " " }}</strong> {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>
+          
           
          </div>
         <div v-else-if="currentAnswer  && this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-wrong">✖</div>
           <p class="big-text"> {{ uiLabels.GameView.youWereWrong }}</p>
-          <p class="medium-text" v-if="getPlayerRank(userName)!=1"> {{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} {{ " " }}</strong> {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>
+          
           </div>
 
         <!-- Om användaren inte hann svara -->
         <div v-else-if= "this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-wrong">✖</div>
           <p class="big-text"> {{ uiLabels.GameView.tooSlow }}</p>
-          <p class="medium-text" v-if="getPlayerRank(userName)!=1"> {{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} {{ " " }}</strong> {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>      
+               
         </div>
   
         <div v-if="isAdmin">
-          <button v-if="!isLastQuestion" @click="nextQuestion">{{ uiLabels.GameView.nextQuestion }}</button>
-          <button v-else @click="nextQuestion"> {{ uiLabels.GameView.showResults }}</button>
+          <button  class="button blue small"v-if="!isLastQuestion" @click="nextQuestion">{{ uiLabels.GameView.nextQuestion }}</button>
+          <button class="button blue small" v-else @click="nextQuestion"> {{ uiLabels.GameView.showResults }}</button>
         </div>
       
       </div>
@@ -124,7 +124,8 @@
 
       isLastQuestion() {
       return this.currentQuestionIndex >= this.questions.length - 1;
-    }
+    },
+   
       
     },
     created() {
@@ -204,8 +205,8 @@
               break;
             
             case "questionPhase":
-              socket.emit("calculateCorrectAnswer", this.gamePin);  
-                this.currentPhase="feedbackPhase";s
+                socket.emit("calculateCorrectAnswer", this.gamePin);  
+                this.currentPhase="feedbackPhase";
                 break;
   
   
@@ -277,33 +278,6 @@
             )
        
           },
-          getPlayerRank(userName) {
-            const rank = this.sortedParticipants.findIndex(p => p.name === userName) + 1;
-            return rank || "N/A"; 
-          },
-
-
-          getPointsBehind(userName) {
-            const sorted = this.sortedParticipants;
-            const rank = sorted.findIndex(p => p.name === userName); 
-            
-            if (rank > 0) {
-              const pointsBehind = sorted[rank - 1].scoreGame1 - sorted[rank].scoreGame1;
-              return pointsBehind;
-            }
-
-            
-            return null;
-        },
-        getPlayerAhead(userName) {
-          const sorted = this.sortedParticipants; 
-          const rank = sorted.findIndex(p => p.name === userName); 
-            
-          if (rank > 0) {
-            return sorted[rank - 1].name;
-            }
-          return null;
-          },
             
       }
 
@@ -316,14 +290,17 @@
     justify-content: center;
     align-items: center;
     height: 300px; 
-    background: black; 
+   
   }
   
-  .countdown-number {
-    color: white;
-    font-size: 8rem;
-    font-weight: bold;
-  }
+  
+    
+.countdown-number {
+  color: #1d3557;
+  font-size: 8rem;
+  font-weight: bold;
+}
+  
  
 
   .countdown-flash-enter-active,
@@ -342,18 +319,22 @@
   }
   
   .countdown-bar {
-    width: 100%;
-    height: 20px;
-    background-color: #ddd;
-    position: relative;
-    margin-top: 10px;
-  }
-  
-  .progress {
-    height: 100%;
-    background-color: #4caf50;
-    transition: width 0.2s ease;
-  }
+  width: 100%;
+  height: 8px;
+  background-color: #ddd;
+  position: relative;
+  margin-top: 10px;
+  border-radius: 5px;
+
+}
+
+.progress {
+  height: 100%;
+  background-color: #4caf50;
+  transition: width 0.2s ease;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
   
   .feedback-icon-wrapper {
     display: flex;
@@ -385,9 +366,6 @@
     background-color: #f44336;
   }
   
-  .top-player {
-    font-weight: bold;
-    color: gold;
-  }
+
   
   </style>
