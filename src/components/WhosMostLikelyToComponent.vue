@@ -37,13 +37,15 @@
         
         <div v-if="checkCorrectAnswer && this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-correct">✔</div>
-          <p class="big-text"> {{ uiLabels.GameView.correct }}</p>
+          <p class="big-text"> {{ uiLabels.GameView.correct }} </p>
+          <p class="small-text">  {{ this.getCorrectParticipants() }} {{ uiLabels.GameView.amountVotes }} </p>
           
           
          </div>
         <div v-else-if="currentAnswer  && this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-wrong">✖</div>
-          <p class="big-text"> {{ uiLabels.GameView.youWereWrong }}</p>
+          <p class="big-text"> {{ uiLabels.GameView.youWereWrong }} </p>
+          <p class="small-text">  {{ this.getCorrectParticipants() }} {{ uiLabels.GameView.amountVotes }} </p>
           
           </div>
 
@@ -51,11 +53,13 @@
         <div v-else-if= "this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-wrong">✖</div>
           <p class="big-text"> {{ uiLabels.GameView.tooSlow }}</p>
+          <<p class="small-text">  {{ this.getCorrectParticipants() }} {{ uiLabels.GameView.amountVotes }} </p>
+          
                
         </div>
   
         <div v-if="isAdmin">
-          <button  class="button blue small"v-if="!isLastQuestion" @click="nextQuestion">{{ uiLabels.GameView.nextQuestion }}</button>
+          <button  class="button blue small" v-if="!isLastQuestion" @click="nextQuestion">{{ uiLabels.GameView.nextQuestion }}</button>
           <button class="button blue small" v-else @click="nextQuestion"> {{ uiLabels.GameView.showResults }}</button>
         </div>
       
@@ -153,9 +157,10 @@
         this.goToNextPhase();
       })
       // Be om frågorna från servern
-      socket.on("correctAnswerCalculated", (correctAnswer) => {
+      socket.on("correctAnswerCalculated", (correctAnswer, maxCount) => {
         console.log("correct answer:", correctAnswer)
         this.correctAnswer = correctAnswer;
+        this.maxCount = maxCount;
       
       })
       socket.emit("joinSocketRoom", this.gamePin);
@@ -273,14 +278,19 @@
               gamePin: this.gamePin,
               answerObj: answerObj,
               userName: this.userName
-            },
-
-           
-            
-              
-            )
-       
+            })
           },
+          getCorrectParticipants() {
+            if (this.correctAnswer.length === 0) return ""; // Tom array
+            if (this.correctAnswer.length === 1) return this.correctAnswer[0]; // Ett namn
+              
+            const separator = this.lang === 'en' ? " and " : " eller ";
+            const lastParticipant = this.correctAnswer.pop();
+            const result = `${this.correctAnswer.join(", ")}${separator}${lastParticipant}`;
+            this.correctAnswer.push(lastParticipant); // Lägg tillbaka sista namnet
+            return result;
+          }
+
             
       }
 

@@ -96,7 +96,8 @@
 		"exitGame":"Avsluta runda",
 		"place":"plats",
 		"youAreIn": "Du ligger på",
-		"gameOver": "Spelet är slut"
+		"gameOver": "Spelet är slut",
+		"amountVotes": "fick flest röster med"
 	  },
 
 	  "ThisOrThat": {
@@ -106,6 +107,7 @@
 		"chosenParticipant": "Utvald deltagare",
 		"didntAnswer": "Svarade inte",
 		"correctAnswer": "Rätt svar",
+		"correctAnswerIs": "Rätt svar var",
 		"finalResults": "Slutgiltigt resultat"
 	  },
 	  "ResponsiveNav": {

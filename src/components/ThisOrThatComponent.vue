@@ -38,13 +38,15 @@
     <h2 v-if="showChosenParticipantNoAnswer" class="no-answer-message">
       {{ uiLabels.ThisOrThat.chosenParticipant }} {{ this.chosenParticipant }} {{ uiLabels.ThisOrThat.didntAnswer }}
     </h2>
-    <div v-else-if="this.correctAnswer" class="feedback-icon-wrapper">
+    <div v-else-if="this.correctAnswer === this.currenAnswerId" class="feedback-icon-wrapper">
         <div class="icon-circle icon-correct">✔</div>
-        <p class="medium-text">{{ uiLabels.ThisOrThat.correctAnswer }}: {{ questions.questions[currentQuestion].answers[correctAnswer-1].answer }}</p>
+        <p class="medium-text">{{ uiLabels.GameView.correct }}</p>
+        <p class="small-text"> <strong>{{ uiLabels.ThisOrThat.correctAnswerIs }}:</strong> {{ questions.questions[currentQuestion].answers[correctAnswer-1].answer }}</p>
     </div>
     <div v-else class="feedback-icon-wrapper">
         <div class="icon-circle icon-wrong">✖</div>
         <p class="medium-text"> {{ uiLabels.GameView.wrong }}</p>
+        <p class="small-text"> <strong>{{ uiLabels.GameView.wrong }}</strong>, {{ uiLabels.ThisOrThat.correctAnswerIs }}: {{ questions.questions[currentQuestion].answers[correctAnswer-1].answer }}</p>
     </div>
 
     <!-- Countdown Bar -->
@@ -103,6 +105,7 @@ export default {
         return {
             currentPhase: 'showRules',
             showChosenParticipantNoAnswer: false,
+            currenAnswerId: null,
 
             questions: [],
             countdown:null,
@@ -124,6 +127,7 @@ export default {
             this.socket.on("nextRound", (nextQuestion, chosenParticipant) => {
             
             this.startRound(nextQuestion, chosenParticipant)
+            this.currenAnswerId = null
         });
             
         this.setupGame();
@@ -210,7 +214,7 @@ export default {
             }
         },
         onAnswer(answerData) { 
-            
+            this.currenAnswerId = answerData.answerId
             this.socket.emit('answer_ThisOrThat', this.gamePin, this.userName, answerData.answerId)
             console.log("User: ", this.userName, "just answered");
         },
@@ -267,40 +271,7 @@ h2.no-answer-message {
 }
 
 /* General text styling */
-p {
-  font-size: 1rem;
-  color: #333;
-}
-.feedback-icon-wrapper {
-  display: flex;
-  flex-direction: column; /* Ikon överst, text under */
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-/* Själva cirkeln */
-.icon-circle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;     
-  width: 100px;        
-  height: 100px;
-  border-radius: 50%; 
-  color: #fff;        
-  margin-bottom: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-}
 
 
-.icon-correct {
-  background-color: #4caf50; 
-}
-
-
-.icon-wrong {
-  background-color: #f44336; 
-}
 </style>
 

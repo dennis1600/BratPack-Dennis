@@ -247,8 +247,9 @@ Data.prototype.correctQuestion_ThisOrThat = function(gamePin) {
   const qId = game.ThisOrThat.currentQuestion;
   const chosen = game.ThisOrThat.chosenParticipant;
   const correctAnswer = game.ThisOrThat.correctAnswers[qId];
-  try{
-    const chosenAnswer = game.ThisOrThat.participants[chosen].answers[qId];
+  const chosenAnswer = game.ThisOrThat.participants[chosen].answers[qId];
+  console.log("Rätt svar är:", correctAnswer)
+  console.log("Hela korrekta objektet är:", game.ThisOrThat.correctAnswers)
     if (!chosenAnswer) {
       const generalParticipant = game.participants.find(p => p.name === chosen);
       if (generalParticipant) {
@@ -258,8 +259,7 @@ Data.prototype.correctQuestion_ThisOrThat = function(gamePin) {
     }
     const correctPlayers = this._getCorrectPlayersExcludingChosen(game, qId, correctAnswer);
     this._distributePoints_ThisOrThat(game, correctPlayers);
-  }
-  catch{}
+ 
   
 };
 
@@ -442,7 +442,7 @@ Data.prototype.calculateCorrectAnswer = function(gamePin) {
     }
   }
 
-  return winningAnswers;
+  return {winningAnswers, maxCount};
 };
 
 Data.prototype.nextQuestionWhosMostLikelyTo = function (gamePin) {

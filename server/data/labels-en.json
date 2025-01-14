@@ -95,7 +95,9 @@
 		"exitGame": "End minigame",
 		"place":"Place",
 		"youAreIn": "You're in",
-		"gameOver": "Game Over"
+		"gameOver": "Game Over",
+		"amountVotes": "got the most votes"
+	
 	  },
 
 	  "ThisOrThat": {
@@ -105,6 +107,7 @@
 		"chosenParticipant": "Chosen participant",
 		"didntAnswer": "Didn't answer",
 		"correctAnswer": "Correct answer",
+		"correctAnswerIs": "Correct answer was",
 		"finalResults": "Final results"
 	  },
 	  "ResponsiveNav": {

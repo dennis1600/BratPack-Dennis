@@ -37,7 +37,6 @@ function sockets(io, socket, data) {
   socket.on("getQuestionsWho", function(lang, gamePin, participants){
     let questions= data.getQuestions(lang, gamePin, "whosMostLikelyTo")
     let questionsWithAnswers = data.addAnswerAlternatives(questions, participants);
-    console.log("Theo o dennis äter en häst", questionsWithAnswers);
     io.to(gamePin).emit("sendingQuestionsWho", questionsWithAnswers);
   });
 
