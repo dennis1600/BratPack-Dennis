@@ -442,7 +442,7 @@ Data.prototype.calculateCorrectAnswer = function(gamePin) {
     }
   }
 
-  return {winningAnswers, maxCount};
+  return winningAnswers;
 };
 
 Data.prototype.nextQuestionWhosMostLikelyTo = function (gamePin) {
