@@ -66,7 +66,7 @@
         type="text"
         v-model="userName"
         :placeholder="uiLabels.CustomGamesView.admin"
-        class="textBox input"
+        class="admin-input"
       />
     </div>
 </div>
@@ -154,7 +154,7 @@ components: {
 data: function() {
   return {
     lang: sessionStorage.getItem("lang") || "en",
-    selectedMinutes: 10,
+    selectedMinutes: 60,
     games: [
       { id: 'generalQuiz', name: 'General Quiz'} ,
       { id: 'whosMostLikelyTo', name: 'Who´s most likely to'},
@@ -805,7 +805,39 @@ methods: {
   justify-content: center; 
 }
 
+.admin-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  text-align: left;
+  width: 100%;
+}
 
+.admin-label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #1d3557;
+}
+
+.admin-input {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: 2px solid #457b9d; /* Blå kant */
+  border-radius: 5px; /* Rundade hörn */
+  background-color: #ffffff; /* Vit bakgrund */
+  color: #000000; /* Svart text */
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-input:focus {
+  border-color: #1d3557; /* Mörkare blå kant vid fokus */
+  box-shadow: 0 0 5px rgba(29, 53, 87, 0.5); /* Lätt skugga */
+}
 
 
 
@@ -900,5 +932,13 @@ methods: {
   margin-left: 40px;
   text-align: center; 
 }
+  admin-input-container {
+    max-width: 90%;
+  }
+
+  .admin-input {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
 }
 </style>

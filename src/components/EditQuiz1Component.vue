@@ -92,7 +92,7 @@
             <label :for="`check-${index}`">{{ uiLabels.EditQuizComponent.correct }}</label>
           </div>
   
-          <button @click="addAlternative" id="alternatative-button">
+          <button @click="addAlternative" id="alternative-button">
             {{ uiLabels.EditQuizComponent.addAlternative }}
           </button>
           <button @click="saveQuestion" id="save-button">

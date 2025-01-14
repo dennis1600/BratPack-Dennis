@@ -40,11 +40,11 @@
     </h2>
     <div v-else-if="this.correctAnswer" class="feedback-icon-wrapper">
         <div class="icon-circle icon-correct">✔</div>
-        {{ uiLabels.ThisOrThat.correctAnswer }}: {{ questions.questions[currentQuestion].answers[correctAnswer-1].answer }}
+        <p class="medium-text">{{ uiLabels.ThisOrThat.correctAnswer }}: {{ questions.questions[currentQuestion].answers[correctAnswer-1].answer }}</p>
     </div>
     <div v-else class="feedback-icon-wrapper">
         <div class="icon-circle icon-wrong">✖</div>
-
+        <p class="medium-text"> {{ uiLabels.GameView.wrong }}</p>
     </div>
 
     <!-- Countdown Bar -->

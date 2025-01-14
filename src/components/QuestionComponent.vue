@@ -131,10 +131,14 @@ button {
   background: var(--gradient-darkOrange);
   border: none;
   border-radius: 10px; 
-  padding: 40px 50px;
+  width: 150px; /* Fixerad bredd */
+  height: 60px; /* Fixerad höjd */
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 button:hover {
@@ -164,8 +168,10 @@ button:active {
 @media screen and (max-width: 768px) {
   button {
     font-size: 16px;
-    padding: 8px 16px;
+    width: 120px; /* Mindre bredd för små skärmar */
+    height: 50px; /* Mindre höjd för små skärmar */
   }
+
   
 }
 

@@ -59,6 +59,29 @@
   box-shadow: 0 0 20px 5px #32CD32;
   transform: scale(1.1); 
 }
+.button.orange {
+  color: white;
+  font-size: 18px;
+  background: var(--gradient-darkOrange);
+  border: none;
+  border-radius: 10px; 
+  width: 180px; /* Justerad bredd */
+  height: auto; /* Anpassa höjden efter innehållet */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 20px; /* Förbättrad padding */
+}
+
+.button.orange:hover {
+  background: var(--gradient-lightOrange); /* Ändrar bakgrundsfärg vid hover */
+  transform: translateY(-5px); /* Ger en upphöjd känsla */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Större skugga vid hover */
+  color: #fff; /* Förtydligar textfärgen vid hover */
+}
 
 
 .big-text{
@@ -69,6 +92,11 @@
 .medium-text{
   font-size: 25px;
   font-weight: 600;
+}
+.small-text{
+  font-size: 18px;
+  font-weight: 600;
+
 }
 
 /*RESPONSIVE DESIGN*/
@@ -240,8 +268,6 @@ input[placeholder] {
 }
 input[type="text"]:focus,
 input[placeholder]:focus {
-  border-color: #4caf50;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
   outline: none;
 }
 
@@ -268,10 +294,10 @@ button {
 }
 
 
-#alternatative-button {
+#alternative-button {
   background-color: grey
 }
-#alternatative-button:hover {
+#alternative-button:hover {
 
   transform: scale(1.05);
 }

@@ -5,7 +5,7 @@
       <div v-if="currentPhase === 'startPhase'">
         <h1> {{ uiLabels.GameView.generalTrivia }}</h1>
         <div v-if="isAdmin">
-          <button class="button blue small" @click="startQuiz"> {{ uiLabels.GameView.startQuiz }}</button>
+          <button class="button green" @click="startQuiz"> {{ uiLabels.GameView.startQuiz }}</button>
         </div>
         <div v-else> {{ uiLabels.GameView.waitingOnAdmin }}</div>
       </div>
@@ -39,20 +39,20 @@
         <div v-if="currentAnswer && currentAnswer.isCorrect  && this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-correct">✔</div>
           <p class="big-text"> {{ uiLabels.GameView.correct }}</p>
-          <p v-if="getPlayerRank(userName)!=1"> {{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} {{ " " }}</strong> {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>
+          <p class="medium-text" v-if="getPlayerRank(userName)!=1"> {{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} {{ " " }}</strong> {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>
         </div>
 
         <div v-else-if="currentAnswer  && this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-wrong">✖</div>
            <p class="big-text">{{ uiLabels.GameView.wrong }}</p>
-          <p v-if="getPlayerRank(userName)!=1">{{uiLabels.GameView.youAreBehind}}{{getPlayerAhead(userName)}} {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>
+          <p class="medium-text" v-if="getPlayerRank(userName)!=1">{{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} </strong> {{ uiLabels.GameView.with }} {{ " " }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>
         </div>
 
         <!-- Om användaren inte hann svara -->
         <div v-else-if="this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-wrong">✖</div>     
           <p class=" medium-text"> {{ uiLabels.GameView.tooSlow }}</p>
-          <p v-if="getPlayerRank(userName)!=1"> {{ uiLabels.GameView.youAreBehind }}{{ getPlayerAhead(userName) }} {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }}</p>
+          <p class="medium-text" v-if="getPlayerRank(userName)!=1"> {{ uiLabels.GameView.youAreBehind }} <strong> {{ getPlayerAhead(userName) }}</strong> {{ uiLabels.GameView.with }} {{ " " }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }}</p>
         </div>
   
         <div v-if="isAdmin">

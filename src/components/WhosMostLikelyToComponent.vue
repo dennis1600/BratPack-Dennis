@@ -38,20 +38,20 @@
         <div v-if="checkCorrectAnswer && this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-correct">✔</div>
           <p class="big-text"> {{ uiLabels.GameView.correct }}</p>
-          <p v-if="getPlayerRank(userName)!=1"> {{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} {{ " " }}</strong> {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>
+          <p class="medium-text" v-if="getPlayerRank(userName)!=1"> {{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} {{ " " }}</strong> {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>
           
          </div>
         <div v-else-if="currentAnswer  && this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-wrong">✖</div>
           <p class="big-text"> {{ uiLabels.GameView.youWereWrong }}</p>
-          <p v-if="getPlayerRank(userName)!=1"> {{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} {{ " " }}</strong> {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>
+          <p class="medium-text" v-if="getPlayerRank(userName)!=1"> {{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} {{ " " }}</strong> {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>
           </div>
 
         <!-- Om användaren inte hann svara -->
         <div v-else-if= "this.isPlaying" class="feedback-icon-wrapper">
           <div class="icon-circle icon-wrong">✖</div>
           <p class="big-text"> {{ uiLabels.GameView.tooSlow }}</p>
-          <p v-if="getPlayerRank(userName)!=1"> {{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} {{ " " }}</strong> {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>      
+          <p class="medium-text" v-if="getPlayerRank(userName)!=1"> {{uiLabels.GameView.youAreBehind}} <strong> {{getPlayerAhead(userName)}} {{ " " }}</strong> {{ uiLabels.GameView.with }} {{ getPointsBehind(userName) }} {{ uiLabels.GameView.points }} </p>      
         </div>
   
         <div v-if="isAdmin">
@@ -73,15 +73,13 @@
  
   
   import QuestionComponent from './QuestionComponent.vue';
-  import Nav from './ResponsiveNav.vue';
   const socket = io("localhost:3000");
   import io from 'socket.io-client'; 
   
   export default {
     name: 'WhosMostLikelyToComponent',
     components: {
-      QuestionComponent,
-      Nav
+      QuestionComponent
     },
     props: {
       gameData: { type: Object, required: true },

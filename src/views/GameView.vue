@@ -50,10 +50,7 @@
             />
     </div>
 
-    <ScoreBoardComponent 
-        :participants="gameData.participants"
-        :uiLabels="uiLabels"
-    />
+    
     
     <div v-if="!activeGame">
        <div class="button-container">
@@ -65,12 +62,10 @@
                    >
                <button
                v-if="!playedGames.includes(gameName)"
-               class="button blue"
+               class="button orange"
                    @click="playMiniGame(gameName)"
-                  
-                  
                    >
-                       {{ gameName }}
+                       <p class="small-text">{{ gameName }}</p>
                </button></div>
 
 
@@ -79,6 +74,10 @@
            </div>
        </div>
    </div>
+   <ScoreBoardComponent 
+        :participants="gameData.participants"
+        :uiLabels="uiLabels"
+    />
 </div>
 </template>
 
@@ -202,6 +201,7 @@
   gap: 10px; 
   flex-wrap: wrap; 
   justify-content: center; 
+  margin-top: 50px;
 }
 
 .button-container button {
