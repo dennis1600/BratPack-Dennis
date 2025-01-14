@@ -11,7 +11,7 @@ function Data() {
  
     participants: [],
     selectedGames: [],
-    selectedMinutes: 10,
+    selectedMinutes: 60,
     gameStarted: false,
     playerAnswers: {},
   };
@@ -42,7 +42,7 @@ Data.prototype.createCustomGame = function () {
  
   customGame.participants = [];
   customGame.selectedGames = [];
-  customGame.selectedMinutes = 10;
+  customGame.selectedMinutes = 60;
   customGame.remainingTime = 3600; 
   customGame.gameStarted = false;
   customGame.customQuestions = {};
@@ -61,7 +61,7 @@ Data.prototype.createCustomGameAlt = function (pin, lang) {
   customGame.lang = lang;  
   customGame.participants = [];
   customGame.selectedGames = [];
-  customGame.selectedMinutes = 10; // 60 minutes default
+  customGame.selectedMinutes = 60; // 60 minutes default
   customGame.remainingTime = 3600; //
   customGame.gameStarted = false;
 
@@ -178,6 +178,7 @@ Data.prototype.getQuestions = function (lang, gamePin, whichQuiz) {
   return standardQuestions;
 };
 // --------------------------------------------------------------------------------------------------
+
 // - ThisOrThat -------------------------------------------------------------------------------------
 Data.prototype.getQuestions_ThisOrThat = function(lang) {
   if (!["en", "sv"].some( el => el === lang)) 
@@ -246,17 +247,20 @@ Data.prototype.correctQuestion_ThisOrThat = function(gamePin) {
   const qId = game.ThisOrThat.currentQuestion;
   const chosen = game.ThisOrThat.chosenParticipant;
   const correctAnswer = game.ThisOrThat.correctAnswers[qId];
-  
-  const chosenAnswer = game.ThisOrThat.participants[chosen].answers[qId];
-  if (!chosenAnswer) {
-    const generalParticipant = game.participants.find(p => p.name === chosen);
-    if (generalParticipant) {
-      generalParticipant.scoreGame3 -= 1000;
+  try{
+    const chosenAnswer = game.ThisOrThat.participants[chosen].answers[qId];
+    if (!chosenAnswer) {
+      const generalParticipant = game.participants.find(p => p.name === chosen);
+      if (generalParticipant) {
+        generalParticipant.scoreGame3 -= 1000;
+      }
+      return;
     }
-    return;
+    const correctPlayers = this._getCorrectPlayersExcludingChosen(game, qId, correctAnswer);
+    this._distributePoints_ThisOrThat(game, correctPlayers);
   }
-  const correctPlayers = this._getCorrectPlayersExcludingChosen(game, qId, correctAnswer);
-  this._distributePoints_ThisOrThat(game, correctPlayers);
+  catch{}
+  
 };
 
 Data.prototype._getCorrectPlayersExcludingChosen = function(game, questionId, correctAnswer) {

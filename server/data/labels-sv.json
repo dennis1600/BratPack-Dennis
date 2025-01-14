@@ -76,6 +76,7 @@
 
 	  "GameView": {
 		"generalTrivia": "Frågesportspelet",
+		"whosMostLikelyTo": "Pekleken",
 		"startQuiz": "Starta spel",
 		"waitingOnAdmin": "Väntar på att admin ska starta quizet...",
 		"youHaveAnswered": "Du har svarat!",
@@ -91,7 +92,7 @@
 		"scoreboard": "Poängställning",
 		"points": "poäng",
 		"with": "med",
-		"menu":"Gå tillbaka till meny",
+		"exitGame":"Avsluta runda",
 		"place":"plats",
 		"youAreIn": "Du ligger på",
 		"gameOver": "Spelet är slut"

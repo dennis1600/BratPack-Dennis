@@ -23,7 +23,7 @@
 
 <div class="participants-toggle">
   <button @click="toggleParticipants">
-    ◀ {{ uiLabels.CustomGamesView.players }} 
+    ◀ <p class="players-text">{{ uiLabels.CustomGamesView.players }}</p>
   </button>
 </div>
 
@@ -743,7 +743,7 @@ methods: {
   border-radius: 5px;
   font-size: 1rem; 
   font-weight: bold;
-  padding: 10px 20px;
+  padding: 5px 10px;
   display: flex;
   align-items: center; 
   gap: 10px; 
@@ -846,12 +846,21 @@ methods: {
   .participants-sidebar {
     z-index: -1;
     width: 70%;
-    right: -70%;
+    right: -77%;
   }
 
   .participants-sidebar.visible {
     z-index: 9999;
     transform: translateX(-70%);
+  }
+  .players-text{
+    color:#457b9d; 
+  }
+  .participants-toggle{
+    padding: 5px 10px;
+    color:#457b9d;  
+    box-shadow: none;
+    right: -55px;
   }
 
   .participants-toggle button {
@@ -859,6 +868,7 @@ methods: {
     font-size: 0.8rem;
     box-shadow: none;
     top: 30%;
+    
   }
 
   .participants-toggle button:hover {

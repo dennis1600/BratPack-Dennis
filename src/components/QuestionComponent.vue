@@ -131,7 +131,7 @@ button {
   background: var(--gradient-darkOrange);
   border: none;
   border-radius: 10px; 
-  padding: 10px 20px;
+  padding: 40px 50px;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
