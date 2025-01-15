@@ -117,7 +117,7 @@
         },
         created: function() {
             this.socket = io("localhost:3000"); // TODO: Fråga micke vilket sätt är bäst att instansiera ny socket?
-            sessionStorage.setItem("dataServer", "");
+            //sessionStorage.setItem("dataServer", "");
             //this.socket = io(sessionStorage.getItem("dataServer"));
 
             this.socket.on( "uiLabels", labels => this.uiLabels = labels );

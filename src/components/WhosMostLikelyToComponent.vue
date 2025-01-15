@@ -78,10 +78,13 @@
   
   import QuestionComponent from './QuestionComponent.vue';
   
- sessionStorage.setItem("dataServer", "");
+ //sessionStorage.setItem("dataServer", "");
  //const socket = io(sessionStorage.getItem("dataServer"));
 
+import io from 'socket.io-client'; 
  const socket = io("localhost:3000");
+
+ 
   
   export default {
     name: 'WhosMostLikelyToComponent',

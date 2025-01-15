@@ -46,7 +46,7 @@
     <div v-else class="feedback-icon-wrapper">
         <div class="icon-circle icon-wrong">✖</div>
         <p class="medium-text"> {{ uiLabels.GameView.wrong }}</p>
-        <p class="small-text"> <strong>{{ uiLabels.GameView.wrong }}</strong>, {{ uiLabels.ThisOrThat.correctAnswerIs }}: {{ questions.questions[currentQuestion].answers[correctAnswer-1].answer }}</p>
+        <p class="small-text"> {{ uiLabels.ThisOrThat.correctAnswerIs }}: {{ questions.questions[currentQuestion].answers[correctAnswer-1].answer }}</p>
     </div>
 
     <!-- Countdown Bar -->
