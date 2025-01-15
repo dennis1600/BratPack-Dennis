@@ -17,9 +17,9 @@
   </template>
   
   <script>
-  //const socket = io("localhost:3000");
+  const socket = io("localhost:3000");
   sessionStorage.setItem("dataServer", "");
-    const socket = io(sessionStorage.getItem("dateServer"));
+  //const socket = io(sessionStorage.getItem("dataServer"));
 
   import io from 'socket.io-client';
   
@@ -53,11 +53,28 @@
         this.localTimer = setInterval(() => {
           if (this.remainingTime > 0) {
             this.remainingTime--;
+          } else{
+            this.endGame(); 
           }
           if (this.remainingTime % 60 === 0) this.ringBell();
         }, 1000);
   
         this.syncInterval = setInterval(this.syncWithServer, 10000); // Request sync with server every 10 seconds.
+      },
+      endGame() {
+        // Emit event to delete game data on the server
+        socket.emit("deleteGame", this.gamePin, (response) => {
+          if (response.error) {
+            console.error("Failed to delete game:", response.error);
+          } else {
+            console.log("Game deleted successfully:", this.gamePin);
+            this.$router.push({ name: "startView" }); // Navigate to startView
+          }
+        });
+
+        // Clear intervals
+        clearInterval(this.localTimer);
+        clearInterval(this.syncInterval);
       },
       syncWithServer() {
         socket.emit('requestGameTime', this.gamePin, (response) => {

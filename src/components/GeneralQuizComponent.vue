@@ -73,10 +73,10 @@
 
 
 import QuestionComponent from './QuestionComponent.vue';
-// const socket = io("localhost:3000");
-sessionStorage.setItem("dataServer", "");
-const socket = io(sessionStorage.getItem("dateServer"));
 
+sessionStorage.setItem("dataServer", "");
+const socket = io(sessionStorage.getItem("dataServer"));
+//const socket = io("localhost:3000");
 import io from 'socket.io-client'; 
 
 export default {
@@ -348,29 +348,7 @@ export default {
   margin-top: 20px;
 }
 
-/* Själva cirkeln */
-.icon-circle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;     /* Storlek på bocken/krysset */
-  width: 100px;        /* Bredd/höjd på cirkeln */
-  height: 100px;
-  border-radius: 50%;  /* Gör den rund */
-  color: #fff;         /* Vit text */
-  margin-bottom: 10px; /* Liten space under cirkeln */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-}
 
-/* Grön cirkel (rätt) */
-.icon-correct {
-  background-color: #4caf50; /* Grön */
-}
-
-/* Röd cirkel (fel) */
-.icon-wrong {
-  background-color: #f44336; /* Röd */
-}
 
 
 </style>

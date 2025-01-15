@@ -11,7 +11,7 @@ function Data() {
  
     participants: [],
     selectedGames: [],
-    selectedMinutes: 60,
+    selectedMinutes: 1,
     gameStarted: false,
     playerAnswers: {},
   };
@@ -42,7 +42,7 @@ Data.prototype.createCustomGame = function () {
  
   customGame.participants = [];
   customGame.selectedGames = [];
-  customGame.selectedMinutes = 60;
+  customGame.selectedMinutes = 1;
   customGame.remainingTime = 3600; 
   customGame.gameStarted = false;
   customGame.customQuestions = {};
@@ -61,7 +61,7 @@ Data.prototype.createCustomGameAlt = function (pin, lang) {
   customGame.lang = lang;  
   customGame.participants = [];
   customGame.selectedGames = [];
-  customGame.selectedMinutes = 60; // 60 minutes default
+  customGame.selectedMinutes = 1; // 60 minutes default
   customGame.remainingTime = 3600; //
   customGame.gameStarted = false;
 

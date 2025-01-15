@@ -77,11 +77,11 @@
  
   
   import QuestionComponent from './QuestionComponent.vue';
-  // const socket = io("localhost:3000");
-  sessionStorage.setItem("dataServer", "");
-  const socket = io(sessionStorage.getItem("dateServer"));
+  
+ sessionStorage.setItem("dataServer", "");
+ //const socket = io(sessionStorage.getItem("dataServer"));
 
-  import io from 'socket.io-client'; 
+ const socket = io("localhost:3000");
   
   export default {
     name: 'WhosMostLikelyToComponent',
@@ -349,36 +349,7 @@
   border-bottom-left-radius: 5px;
 }
   
-  .feedback-icon-wrapper {
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-
-  .icon-circle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;    
-    width: 100px;        
-    height: 100px;
-    border-radius: 50%;  
-    color: #fff;         
-    margin-bottom: 10px; 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-  }
-
-  .icon-correct {
-    background-color: #4caf50; 
-  }
-  
-  .icon-wrong {
-    background-color: #f44336;
-  }
-  
+ 
 
   
   </style>

@@ -77,7 +77,7 @@
         </div>
       <div class="field">
         <div class="value left"><strong>-</strong></div>
-      <input type="range" v-model=selectedMinutes min="10" max="120" step="10" />
+      <input type="range" v-model=selectedMinutes min="1" max="120" step="10" />
       <div class="value right"><strong>+</strong></div>
 
   </div>
@@ -133,9 +133,9 @@
 </template>
 
 <script>
-//const socket = io("localhost:3000");
+const socket = io("localhost:3000");
 sessionStorage.setItem("dataServer", "");
-const socket = io(sessionStorage.getItem("dateServer"));
+// socket = io(sessionStorage.getItem("dataServer"));
 
 import io from 'socket.io-client'; 
 import EditQuiz1Component from '../components/EditQuiz1Component.vue';
@@ -157,7 +157,7 @@ components: {
 data: function() {
   return {
     lang: sessionStorage.getItem("lang") || "en",
-    selectedMinutes: 60,
+    selectedMinutes: 1,
     games: [
       { id: 'generalQuiz', name: 'General Quiz'} ,
       { id: 'whosMostLikelyTo', name: 'Who´s most likely to'},
