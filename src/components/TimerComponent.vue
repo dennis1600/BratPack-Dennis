@@ -17,12 +17,13 @@
   </template>
   
   <script>
-
-  //sessionStorage.setItem("dataServer", "");
-  //const socket = io(sessionStorage.getItem("dataServer"));
-  const socket = io("localhost:3000");
-
+      
   import io from 'socket.io-client';
+  sessionStorage.setItem("dataServer", "");
+  const socket = io(sessionStorage.getItem("dataServer"));
+  //const socket = io("localhost:3000");
+
+ 
   
   export default {
     props: {
