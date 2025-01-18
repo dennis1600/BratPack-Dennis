@@ -133,9 +133,9 @@
 </template>
 
 <script>
-const socket = io("localhost:3000");
-//sessionStorage.setItem("dataServer", "");
-//const socket = io(sessionStorage.getItem("dataServer"));
+//const socket = io("localhost:3000");
+sessionStorage.setItem("dataServer", "");
+const socket = io(sessionStorage.getItem("dataServer"));
 
 import io from 'socket.io-client'; 
 import EditQuiz1Component from '../components/EditQuiz1Component.vue';
